@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+sqlmodel
+python-dotenv
+sqlalchemy
+#postgresql
+#postgresql-contrib
+asyncpg
+psycopg2-binary 
+alembic
+passlib
+pyjwt
+python-jose
+pydantic[email]
+python-multipart
+minio
+pydantic-settings

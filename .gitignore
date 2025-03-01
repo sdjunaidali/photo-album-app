@@ -1,0 +1,25 @@
+# Byte-compiled / virtual environment files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+
+# Logs & databases
+*.log
+*.sqlite3
+db.sqlite3
+
+# Alembic migrations
+migrations/
+
+# Alembic migrations cache
+alembic/versions/*.pyc
+alembic/
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/

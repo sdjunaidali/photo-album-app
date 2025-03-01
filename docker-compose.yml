@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: photo_db
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: photo_album_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_BROWSER: "on" # Enable Web UI
+    command: server /data --address ":9000" --console-address ":37849"
+    ports:
+      - "9000:9000" # MinIO API
+      - "9001:9001" # MinIO console (if needed for admin access)
+      - "37849:37849" # MinIO Web UI
+    volumes:
+      - minio_data:/data
+    restart: always
+
+  app:
+    build:
+      context: .
+    container_name: photo_album_app
+    environment:
+      DATABASE_URL: postgresql://username:password@photo_db:5432/photo_album_db
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET_NAME: album-images
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - minio
+    restart: always
+
+volumes:
+  postgres_data:
+  minio_data:
